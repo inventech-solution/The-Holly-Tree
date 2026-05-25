@@ -4944,3 +4944,19 @@ product-recommendations:has([data-has-recommendations='false']) {
     translate: 0px var(--atc-destination, 0px);
   }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-reveal {
+    --scroll-reveal-offset: 32px;
+    --scroll-reveal-duration: 450ms;
+    opacity: 0;
+    transform: translate3d(0, var(--scroll-reveal-offset), 0);
+    transition: opacity var(--scroll-reveal-duration) ease, transform var(--scroll-reveal-duration) ease;
+    will-change: opacity, transform;
+  }
+
+  .scroll-reveal.scroll-reveal--visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
