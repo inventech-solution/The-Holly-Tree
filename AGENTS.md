@@ -70,3 +70,36 @@ Run what is relevant to your change:
 - Do not add license headers or reformat untouched files wholesale.
 - Prefer backward-compatible edits; call out unavoidable breaking changes explicitly.
 - If a command/tool is unavailable in the environment, note it clearly in the final report.
+
+
+## 7) Scroll reveal animation targeting
+
+The theme includes a lightweight scroll reveal system (`assets/scroll-reveal.js`) that can animate either full sections or specific elements.
+
+To trigger animation on a **particular element** inside a section, add the attribute:
+
+- `data-scroll-reveal`
+
+Optional tuning attributes on that same element:
+
+- `data-scroll-reveal-offset="32"` (pixels; positive value moves element down before reveal)
+- `data-scroll-reveal-duration="450"` (milliseconds)
+
+Example in Liquid:
+
+```liquid
+<div
+  class="feature-card"
+  data-scroll-reveal
+  data-scroll-reveal-offset="24"
+  data-scroll-reveal-duration="500"
+>
+  ...
+</div>
+```
+
+Notes:
+
+- Visibility is detected with `IntersectionObserver`; reveal class is added when visible and removed when out of view (reverse/un-animation).
+- Respect `prefers-reduced-motion`: animations are skipped for users who request reduced motion.
+- Existing default behavior also targets `.shopify-section`. If you need finer control in a section, prefer adding `data-scroll-reveal` to the exact child elements you want animated.
