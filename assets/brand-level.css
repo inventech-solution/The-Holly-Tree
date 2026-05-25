@@ -1,0 +1,74 @@
+/* Brand-level typography overrides */
+
+:root {
+  --brand-body-font-size: 16px;
+  --brand-body-line-height: 1.6;
+
+  --brand-h1-size: 2.5rem;
+  --brand-h2-size: 2rem;
+  --brand-h3-size: 1.75rem;
+  --brand-h4-size: 1.5rem;
+  --brand-h5-size: 1.25rem;
+  --brand-h6-size: 1.125rem;
+}
+
+body {
+  font-size: var(--brand-body-font-size) !important;
+  line-height: var(--brand-body-line-height) !important;
+}
+
+h1 {
+  font-size: var(--brand-h1-size) !important;
+  line-height: 1.2 !important;
+}
+
+h2 {
+  font-size: var(--brand-h2-size) !important;
+  line-height: 1.25 !important;
+}
+
+h3 {
+  font-size: var(--brand-h3-size) !important;
+  line-height: 1.3 !important;
+}
+
+h4 {
+  font-size: var(--brand-h4-size) !important;
+  line-height: 1.35 !important;
+}
+
+h5 {
+  font-size: var(--brand-h5-size) !important;
+  line-height: 1.4 !important;
+}
+
+h6 {
+  font-size: var(--brand-h6-size) !important;
+  line-height: 1.45 !important;
+}
+
+/* Tablet */
+@media screen and (max-width: 989px) {
+  :root {
+    --brand-body-font-size: 15px;
+    --brand-h1-size: 2.125rem;
+    --brand-h2-size: 1.75rem;
+    --brand-h3-size: 1.5rem;
+    --brand-h4-size: 1.3125rem;
+    --brand-h5-size: 1.125rem;
+    --brand-h6-size: 1rem;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+  :root {
+    --brand-body-font-size: 14px;
+    --brand-h1-size: 1.875rem;
+    --brand-h2-size: 1.5625rem;
+    --brand-h3-size: 1.375rem;
+    --brand-h4-size: 1.25rem;
+    --brand-h5-size: 1.0625rem;
+    --brand-h6-size: 0.9375rem;
+  }
+}
