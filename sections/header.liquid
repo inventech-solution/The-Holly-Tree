@@ -96,14 +96,6 @@
     endif
   endif
 
-  assign desktop_actions_order = section.settings.desktop_actions_order | default: 'search,cart,account'
-  assign desktop_search_first = desktop_actions_order | split: ',' | first
-  if desktop_search_first == 'search'
-    assign order = order | replace: ',actions,search', ',search,actions'
-  else
-    assign order = order | replace: ',search,actions', ',actions,search'
-  endif
-
   capture search
     render 'search',
       style: search_style,
@@ -313,6 +305,7 @@
 <header-component
   id="header-component"
   class="{{ class }}"
+  data-desktop-actions-order="{{ section.settings.desktop_actions_order | default: 'search,cart,account' }}"
   data-theme-color="rgb({{ section.settings.color_scheme_top.settings.background.rgb }})"
   {% if transparent %}
     transparent="{{ transparent }}"
@@ -905,6 +898,20 @@
   .header-actions__action:not(.account-button) svg {
     width: var(--icon-size-md);
     height: var(--icon-size-md);
+  }
+
+  @media screen and (min-width: 750px) {
+    #header-component[data-desktop-actions-order='search,cart,account'] .header__column--right .search-action { order: 1; }
+    #header-component[data-desktop-actions-order='search,cart,account'] .header__column--right header-actions { order: 2; }
+
+    #header-component[data-desktop-actions-order='search,account,cart'] .header__column--right .search-action { order: 1; }
+    #header-component[data-desktop-actions-order='search,account,cart'] .header__column--right header-actions { order: 2; }
+
+    #header-component[data-desktop-actions-order='account,search,cart'] .header__column--right header-actions { order: 1; }
+    #header-component[data-desktop-actions-order='account,search,cart'] .header__column--right .search-action { order: 2; }
+
+    #header-component[data-desktop-actions-order='cart,search,account'] .header__column--right header-actions { order: 1; }
+    #header-component[data-desktop-actions-order='cart,search,account'] .header__column--right .search-action { order: 2; }
   }
 
   .header:has(#Details-menu-drawer-container[open]) {

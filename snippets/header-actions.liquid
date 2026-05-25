@@ -109,9 +109,6 @@
   {% endif %}
   {{- block.shopify_attributes -}}
 >
-  {% assign actions_order = actions_order | default: 'search,cart,account' %}
-  {% assign account_before_cart = actions_order contains 'account,cart' %}
-
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     <script
       src="{{ 'cart-drawer.js' | asset_url }}"
@@ -252,13 +249,12 @@
     {% endcapture %}
   {% endif %}
 
-  {% if account_before_cart %}
-    {{ account_action }}
+  <div class="header-actions__item header-actions__item--cart">
     {{ cart_action }}
-  {% else %}
-    {{ cart_action }}
+  </div>
+  <div class="header-actions__item header-actions__item--account">
     {{ account_action }}
-  {% endif %}
+  </div>
 </header-actions>
 
 {% stylesheet %}
@@ -327,6 +323,37 @@
 
     @media screen and (min-width: 750px) {
       margin-inline-end: calc(var(--gap-xs) * -1);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    header-actions {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .header-actions__item:empty {
+      display: none;
+    }
+
+    #header-component[data-desktop-actions-order='search,account,cart'] .header-actions__item--account,
+    #header-component[data-desktop-actions-order='account,search,cart'] .header-actions__item--account {
+      order: 1;
+    }
+
+    #header-component[data-desktop-actions-order='search,account,cart'] .header-actions__item--cart,
+    #header-component[data-desktop-actions-order='account,search,cart'] .header-actions__item--cart {
+      order: 2;
+    }
+
+    #header-component[data-desktop-actions-order='search,cart,account'] .header-actions__item--cart,
+    #header-component[data-desktop-actions-order='cart,search,account'] .header-actions__item--cart {
+      order: 1;
+    }
+
+    #header-component[data-desktop-actions-order='search,cart,account'] .header-actions__item--account,
+    #header-component[data-desktop-actions-order='cart,search,account'] .header-actions__item--account {
+      order: 2;
     }
   }
 
