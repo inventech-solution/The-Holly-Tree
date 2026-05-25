@@ -24,7 +24,11 @@
       </span>
 
       <span class="svg-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}">
-        {{ 'icon-search.svg' | inline_asset_content }}
+        {% if icon_search_custom != blank %}
+          {{ icon_search_custom | image_url: width: 48 | image_tag: alt: 'Search', loading: 'lazy' }}
+        {% else %}
+          {{ 'icon-search.svg' | inline_asset_content }}
+        {% endif %}
       </span>
     </button>
   </search-button>

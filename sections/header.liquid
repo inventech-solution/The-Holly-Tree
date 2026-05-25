@@ -58,7 +58,13 @@
   endcapture
 
   capture actions
-    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
+    render 'header-actions',
+      customer_account_menu: section.settings.customer_account_menu,
+      display_style: section.settings.actions_display_style,
+      section: section,
+      icon_cart_custom: section.settings.icon_cart_custom,
+      icon_account_custom: section.settings.icon_account_custom,
+      actions_order: section.settings.desktop_actions_order
   endcapture
 
   if shop.customer_accounts_enabled
@@ -89,8 +95,21 @@
       endif
     endif
   endif
+
+  assign desktop_actions_order = section.settings.desktop_actions_order | default: 'search,cart,account'
+  assign desktop_search_first = desktop_actions_order | split: ',' | first
+  if desktop_search_first == 'search'
+    assign order = order | replace: ',actions,search', ',search,actions'
+  else
+    assign order = order | replace: ',search,actions', ',actions,search'
+  endif
+
   capture search
-    render 'search', style: search_style, class: search_class, display_style: section.settings.actions_display_style
+    render 'search',
+      style: search_style,
+      class: search_class,
+      display_style: section.settings.actions_display_style,
+      icon_search_custom: section.settings.icon_search_custom
   endcapture
 
   # Skip drawer search under specific conditions:
@@ -104,7 +123,11 @@
   if section.settings.search_row == 'bottom' or search_style != 'none' and skip_drawer_search == false
     # Mobile search duplicate for when search is not in the right order for mobile layout
     capture drawer_search
-      render 'search', class: 'search-action--hidden-on-menu', style: search_style, display_style: section.settings.actions_display_style
+      render 'search',
+        class: 'search-action--hidden-on-menu',
+        style: search_style,
+        display_style: section.settings.actions_display_style,
+        icon_search_custom: section.settings.icon_search_custom
     endcapture
   endif
 
@@ -1467,6 +1490,45 @@
         }
       ],
       "default": "icon"
+    },
+    {
+      "type": "select",
+      "id": "desktop_actions_order",
+      "label": "Desktop right icon order",
+      "options": [
+        {
+          "value": "search,cart,account",
+          "label": "Search, Cart, Account"
+        },
+        {
+          "value": "search,account,cart",
+          "label": "Search, Account, Cart"
+        },
+        {
+          "value": "account,search,cart",
+          "label": "Account, Search, Cart"
+        },
+        {
+          "value": "cart,search,account",
+          "label": "Cart, Search, Account"
+        }
+      ],
+      "default": "search,cart,account"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_search_custom",
+      "label": "Custom search icon (optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_cart_custom",
+      "label": "Custom cart icon (optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_account_custom",
+      "label": "Custom account icon (optional)"
     },
     {
       "type": "select",

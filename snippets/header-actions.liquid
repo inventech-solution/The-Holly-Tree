@@ -17,7 +17,11 @@
       class="svg-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}"
       aria-hidden="true"
     >
-      {{ 'icon-cart.svg' | inline_asset_content }}
+      {% if icon_cart_custom != blank %}
+        {{ icon_cart_custom | image_url: width: 48 | image_tag: alt: 'Cart', loading: 'lazy' }}
+      {% else %}
+        {{ 'icon-cart.svg' | inline_asset_content }}
+      {% endif %}
     </span>
 
     {% render 'cart-bubble', limit: 100, live_region: true %}
@@ -25,30 +29,29 @@
 {% endcapture %}
 
 {% capture account_icon %}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="15"
-    height="17"
-    viewBox="0 0 15 17"
-    fill="none"
-    slot="signed-out-avatar"
-    class="account-button__icon"
-  >
-    <path
-      stroke="currentColor"
-      stroke-linejoin="round"
-      stroke-width="var(--icon-stroke-width)"
-      d="M10.375 3.813a3.063 3.063 0 1 1-6.125 0 3.063 3.063 0 0 1 6.125 0ZM7.313 9.5c-3.667 0-6.24 2.691-6.563 6.125h13.125C13.552 12.191 10.979 9.5 7.312 9.5Z"
-    />
-  </svg>
+  {% if icon_account_custom != blank %}
+    {{ icon_account_custom | image_url: width: 48 | image_tag: alt: 'Account', loading: 'lazy', class: 'account-button__icon-image' }}
+  {% else %}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="17"
+      viewBox="0 0 15 17"
+      fill="none"
+      slot="signed-out-avatar"
+      class="account-button__icon"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linejoin="round"
+        stroke-width="var(--icon-stroke-width)"
+        d="M10.375 3.813a3.063 3.063 0 1 1-6.125 0 3.063 3.063 0 0 1 6.125 0ZM7.313 9.5c-3.667 0-6.24 2.691-6.563 6.125h13.125C13.552 12.191 10.979 9.5 7.312 9.5Z"
+      />
+    </svg>
+  {% endif %}
 {% endcapture %}
 
-<header-actions
-  {% if display_style == 'text' %}
-    class="header-actions--text"
-  {% endif %}
-  {{- block.shopify_attributes -}}
->
+{% capture account_action %}
   {% if shop.customer_accounts_enabled %}
     {% liquid
       assign account_actions_style = ''
@@ -98,6 +101,16 @@
       </shopify-account>
     </div>
   {% endif %}
+{% endcapture %}
+
+<header-actions
+  {% if display_style == 'text' %}
+    class="header-actions--text"
+  {% endif %}
+  {{- block.shopify_attributes -}}
+>
+  {% assign actions_order = actions_order | default: 'search,cart,account' %}
+  {% assign account_before_cart = actions_order contains 'account,cart' %}
 
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     <script
@@ -137,7 +150,8 @@
       </div>
     {% endcapture %}
 
-    <cart-drawer-component
+    {% capture cart_action %}
+      <cart-drawer-component
       class="cart-drawer{% if display_style == 'text' %} cart-drawer--text{% endif %}"
       {{ block.shopify_attributes }}
       {% if settings.auto_open_cart_drawer %}
@@ -223,16 +237,27 @@
           </cart-items-component>
         </div>
       </dialog>
-    </cart-drawer-component>
+      </cart-drawer-component>
+    {% endcapture %}
   {% else %}
-    <a
+    {% capture cart_action %}
+      <a
       href="{{ routes.cart_url }}"
       class="header-actions__action action__cart{% if display_style == 'text' %} header-actions__text-style{% endif %}"
       aria-label="{{ 'accessibility.cart' | t }}"
       aria-describedby="cart-bubble-text"
-    >
-      {{ cart_icon }}
-    </a>
+      >
+        {{ cart_icon }}
+      </a>
+    {% endcapture %}
+  {% endif %}
+
+  {% if account_before_cart %}
+    {{ account_action }}
+    {{ cart_action }}
+  {% else %}
+    {{ cart_action }}
+    {{ account_action }}
   {% endif %}
 </header-actions>
 
