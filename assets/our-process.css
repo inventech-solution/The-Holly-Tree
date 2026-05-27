@@ -29,6 +29,7 @@
 .our-process__viewport {
   overflow: visible;
   width: 100%;
+  min-width: 0;
 }
 
 .our-process__track {
