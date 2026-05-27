@@ -1,10 +1,13 @@
 .our-process {
   overflow: hidden;
+  margin-block: 30px;
 }
 
 .our-process__container {
   display: grid;
   gap: 2rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .our-process__header {
@@ -25,6 +28,8 @@
 
 .our-process__viewport {
   overflow: visible;
+  width: 100%;
+  min-width: 0;
 }
 
 .our-process__track {

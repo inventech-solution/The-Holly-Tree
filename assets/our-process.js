@@ -1,4 +1,6 @@
 (() => {
+  const LOG_PREFIX = '[our-process]';
+
   const selectors = {
     section: '[data-our-process-section]',
     viewport: '[data-our-process-viewport]',
@@ -6,48 +8,68 @@
     card: '.our-process__card'
   };
 
-  const canUseGsap = () => typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+  const getGsapRuntime = () => {
+    const gsap = window.gsap;
+    const ScrollTrigger = window.ScrollTrigger || window.gsap?.plugins?.ScrollTrigger;
 
-  const initProcessSection = (section) => {
+    if (!gsap || !ScrollTrigger) {
+      console.warn(`${LOG_PREFIX} Missing GSAP or ScrollTrigger runtime.`);
+      return null;
+    }
+    return { gsap, ScrollTrigger };
+  };
+
+  const getTotalScroll = (track, viewport) => Math.max(0, track.scrollWidth - viewport.clientWidth);
+
+  const initProcessSection = (section, runtime) => {
+    const { gsap } = runtime;
     const viewport = section.querySelector(selectors.viewport);
     const track = section.querySelector(selectors.track);
+
     if (!viewport || !track) return;
 
     const cards = track.querySelectorAll(selectors.card);
-    if (cards.length < 2 || !canUseGsap()) return;
+    if (cards.length < 2) return;
 
-    const mm = window.gsap.matchMedia();
+    const mm = gsap.matchMedia();
 
     mm.add('(min-width: 768px)', () => {
-      const totalScroll = Math.max(0, track.scrollWidth - viewport.clientWidth);
-      if (!totalScroll) return undefined;
-
-      const tween = window.gsap.to(track, {
-        x: -totalScroll,
+      const tween = gsap.to(track, {
+        x: () => -getTotalScroll(track, viewport),
         ease: 'none',
         scrollTrigger: {
           trigger: section,
-          start: 'top top',
-          end: `+=${totalScroll}`,
+          start: 'top bottom',
+          end: () => `+=${Math.max(1, getTotalScroll(track, viewport))}`,
           pin: true,
           scrub: 0.25,
           anticipatePin: 1,
-          invalidateOnRefresh: true
+          invalidateOnRefresh: true,
         }
       });
 
       return () => {
         tween.scrollTrigger?.kill();
         tween.kill();
-        window.gsap.set(track, { clearProps: 'transform' });
+        gsap.set(track, { clearProps: 'transform' });
       };
     });
   };
 
   const onReady = () => {
-    if (!canUseGsap()) return;
-    window.gsap.registerPlugin(window.ScrollTrigger);
-    document.querySelectorAll(selectors.section).forEach(initProcessSection);
+    const runtime = getGsapRuntime();
+    if (!runtime) return;
+
+    const { gsap, ScrollTrigger } = runtime;
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll(selectors.section).forEach((section) => initProcessSection(section, runtime));
+
+    window.addEventListener('load', () => {
+      ScrollTrigger.refresh();
+    }, { once: true });
+
+    ScrollTrigger.refresh();
   };
 
   if (document.readyState === 'loading') {
