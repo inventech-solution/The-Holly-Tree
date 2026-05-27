@@ -136,9 +136,8 @@ class HeaderComponent extends Component {
     if (!this.#offscreen && stickyMode !== 'always') return;
 
     const scrollTop = document.scrollingElement?.scrollTop ?? 0;
-    const headerTop = this.getBoundingClientRect().top;
     const isScrollingUp = scrollTop < this.#lastScrollTop;
-    const isAtTop = headerTop >= 0;
+    const isAtTop = scrollTop <= 0;
 
     if (this.#timeout) {
       clearTimeout(this.#timeout);
