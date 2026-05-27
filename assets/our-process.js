@@ -29,28 +29,25 @@
     const mm = gsap.matchMedia();
 
     mm.add('(min-width: 768px)', () => {
+      const totalScroll = getTotalScroll(track, viewport);
+      if (totalScroll <= 0) return undefined;
+
       const tween = gsap.to(track, {
         x: () => -getTotalScroll(track, viewport),
         ease: 'none',
         scrollTrigger: {
           trigger: section,
-          start: 'top bottom',
+          start: 'top top',
           end: () => `+=${Math.max(1, getTotalScroll(track, viewport))}`,
           pin: true,
-          pinSpacing: false,
+          pinSpacing: true,
           scrub: 0.25,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         }
       });
 
-      console.log(`${LOG_PREFIX} GSAP tween + ScrollTrigger created`, {
-        sectionId: section.dataset.sectionId,
-        end: totalScroll,
-      });
-
       return () => {
-        console.log(`${LOG_PREFIX} Cleaning up GSAP tween`, { sectionId: section.dataset.sectionId });
         tween.scrollTrigger?.kill();
         tween.kill();
         gsap.set(track, { clearProps: 'transform' });
