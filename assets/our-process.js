@@ -1,4 +1,6 @@
 (() => {
+  const LOG_PREFIX = '[our-process]';
+
   const selectors = {
     section: '[data-our-process-section]',
     viewport: '[data-our-process-viewport]',
@@ -10,7 +12,10 @@
     const gsap = window.gsap;
     const ScrollTrigger = window.ScrollTrigger || window.gsap?.plugins?.ScrollTrigger;
 
-    if (!gsap || !ScrollTrigger) return null;
+    if (!gsap || !ScrollTrigger) {
+      console.warn(`${LOG_PREFIX} Missing GSAP or ScrollTrigger runtime.`);
+      return null;
+    }
     return { gsap, ScrollTrigger };
   };
 
