@@ -1,6 +1,13 @@
 {% liquid
   assign logo_count = section.blocks.size
   assign marquee_duration = section.settings.speed | default: 25
+  assign visible_logo_count = 0
+
+  for block in section.blocks
+    if block.settings.image != blank
+      assign visible_logo_count = visible_logo_count | plus: 1
+    endif
+  endfor
 %}
 
 <section id="certifications-logo-slider-{{ section.id }}" class="certifications-logo-slider section section--full-width" data-section-id="{{ section.id }}">
@@ -10,15 +17,15 @@
         <h2 class="certifications-logo-slider__heading h2">{{ section.settings.heading }}</h2>
       {% endif %}
 
-      {% if logo_count > 0 %}
-        <div class="certifications-logo-slider__viewport" aria-label="{{ section.settings.heading | default: 'Certifications' | escape }}">
+      {% if logo_count > 0 and visible_logo_count > 0 %}
+        <div class="certifications-logo-slider__viewport" role="region" aria-label="{{ section.settings.heading | default: 'Certifications' | escape }}">
           <div class="certifications-logo-slider__track" style="--marquee-duration: {{ marquee_duration }}s;">
             {% for duplicate in (1..2) %}
               <ul class="certifications-logo-slider__list" role="list" {% if duplicate == 2 %}aria-hidden="true"{% endif %}>
                 {% for block in section.blocks %}
                   {% assign logo_alt = block.settings.alt_text | default: section.settings.heading | default: 'Certification logo' %}
-                  <li class="certifications-logo-slider__item" {{ block.shopify_attributes }}>
-                    {% if block.settings.image != blank %}
+                  {% if block.settings.image != blank %}
+                    <li class="certifications-logo-slider__item" {% if duplicate == 1 %}{{ block.shopify_attributes }}{% endif %}>
                       <div class="certifications-logo-slider__logo certifications-logo-slider__logo--{{ block.settings.logo_shape }}">
                         {{
                           block.settings.image
@@ -31,8 +38,8 @@
                             class: 'certifications-logo-slider__image'
                         }}
                       </div>
-                    {% endif %}
-                  </li>
+                    </li>
+                  {% endif %}
                 {% endfor %}
               </ul>
             {% endfor %}
