@@ -37,13 +37,20 @@
           start: 'top bottom',
           end: () => `+=${Math.max(1, getTotalScroll(track, viewport))}`,
           pin: true,
+          pinSpacing: false,
           scrub: 0.25,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         }
       });
 
+      console.log(`${LOG_PREFIX} GSAP tween + ScrollTrigger created`, {
+        sectionId: section.dataset.sectionId,
+        end: totalScroll,
+      });
+
       return () => {
+        console.log(`${LOG_PREFIX} Cleaning up GSAP tween`, { sectionId: section.dataset.sectionId });
         tween.scrollTrigger?.kill();
         tween.kill();
         gsap.set(track, { clearProps: 'transform' });
