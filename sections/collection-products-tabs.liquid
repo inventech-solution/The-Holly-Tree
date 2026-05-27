@@ -122,7 +122,7 @@
   #cp-tabs-{{ section.id }} .cp-tabs__tab {
     border: 0;
     background: transparent;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 600;
     color: #141414;
     cursor: pointer;
@@ -187,8 +187,8 @@
     transition: opacity 0.2s ease;
   }
 
-  #cp-tabs-{{ section.id }} .cp-card__image-wrap:hover ~ .cp-card__actions,
-  #cp-tabs-{{ section.id }} .cp-card__title:hover ~ .cp-card__actions,
+  #cp-tabs-{{ section.id }} .cp-card:hover .cp-card__actions,
+  #cp-tabs-{{ section.id }} .cp-card__actions:hover,
   #cp-tabs-{{ section.id }} .cp-card:focus-within .cp-card__actions {
     opacity: 1;
     visibility: visible;
