@@ -176,11 +176,105 @@
         "speed": 25,
         "color_scheme": ""
       }
+    },
+    "our_process_GeqtbB": {
+      "type": "our-process",
+      "blocks": {
+        "step_BPLg9C": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p1.png",
+            "title": "Seed Selection",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        },
+        "step_w8fUqP": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p2.png",
+            "title": "Soil Testing",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        },
+        "step_ebzNC6": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p3.png",
+            "title": "Seed Selection",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        },
+        "step_yyTNPa": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p4.png",
+            "title": "Seed Selection",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        },
+        "step_4qYize": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p1.png",
+            "title": "Seed Selection",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        },
+        "step_EXqaaV": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p2.png",
+            "title": "Seed Selection",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        },
+        "step_AUaV8P": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p3.png",
+            "title": "Seed Selection",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        },
+        "step_MqkALG": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p4.png",
+            "title": "Seed Selection",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        },
+        "step_m6EQQ3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/p1.png",
+            "title": "Seed Selection",
+            "text": "<p>The foundation of organic integrity is the Seed Selection stage. This involves sourcing non-GMO, certified organic seeds that have never been treated with synthetic fungicides or pesticides.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "step_BPLg9C",
+        "step_w8fUqP",
+        "step_ebzNC6",
+        "step_yyTNPa",
+        "step_4qYize",
+        "step_EXqaaV",
+        "step_AUaV8P",
+        "step_MqkALG",
+        "step_m6EQQ3"
+      ],
+      "name": "Our Process",
+      "settings": {
+        "subheading": "",
+        "heading": "Our Process"
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
     "collection_products_tabs_home",
-    "certifications_logo_slider_WMHMUW"
+    "certifications_logo_slider_WMHMUW",
+    "our_process_GeqtbB"
   ]
 }
