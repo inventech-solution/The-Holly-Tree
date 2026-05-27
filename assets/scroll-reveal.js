@@ -20,7 +20,7 @@ function setupScrollReveal() {
     return;
   }
 
-  const elements = Array.from(document.querySelectorAll(TARGET_SELECTOR)).filter((element) => !element.closest('#shopify-section-header-group'));
+  const elements = Array.from(document.querySelectorAll(TARGET_SELECTOR)).filter((element) => !element.closest('#shopify-section-header-group') && !element.hasAttribute('data-disable-scroll-reveal'));
 
   if (!elements.length) return;
 
