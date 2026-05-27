@@ -92,7 +92,6 @@ class HeaderComponent extends Component {
       const { isIntersecting } = entry;
 
       if (alwaysSticky) {
-        this.dataset.stickyState = isIntersecting ? 'inactive' : 'active';
         if (this.dataset.themeColor) changeMetaThemeColor(this.dataset.themeColor);
       } else {
         this.#offscreen = !isIntersecting || this.dataset.stickyState === 'active';
@@ -137,9 +136,8 @@ class HeaderComponent extends Component {
     if (!this.#offscreen && stickyMode !== 'always') return;
 
     const scrollTop = document.scrollingElement?.scrollTop ?? 0;
-    const headerTop = this.getBoundingClientRect().top;
     const isScrollingUp = scrollTop < this.#lastScrollTop;
-    const isAtTop = headerTop >= 0;
+    const isAtTop = scrollTop <= 0;
 
     if (this.#timeout) {
       clearTimeout(this.#timeout);
@@ -147,6 +145,8 @@ class HeaderComponent extends Component {
     }
 
     if (stickyMode === 'always') {
+      this.dataset.stickyState = isAtTop ? 'inactive' : 'active';
+
       if (isAtTop) {
         this.dataset.scrollDirection = 'none';
       } else if (isScrollingUp) {
@@ -190,6 +190,10 @@ class HeaderComponent extends Component {
     const stickyMode = this.getAttribute('sticky');
     if (stickyMode) {
       this.#observeStickyPosition(stickyMode === 'always');
+
+      if (stickyMode === 'always') {
+        this.dataset.stickyState = 'inactive';
+      }
 
       if (stickyMode === 'scroll-up' || stickyMode === 'always') {
         document.addEventListener('scroll', this.#handleWindowScroll);
