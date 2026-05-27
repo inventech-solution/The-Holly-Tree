@@ -44,7 +44,13 @@
         }
       });
 
+      console.log(`${LOG_PREFIX} GSAP tween + ScrollTrigger created`, {
+        sectionId: section.dataset.sectionId,
+        end: totalScroll,
+      });
+
       return () => {
+        console.log(`${LOG_PREFIX} Cleaning up GSAP tween`, { sectionId: section.dataset.sectionId });
         tween.scrollTrigger?.kill();
         tween.kill();
         gsap.set(track, { clearProps: 'transform' });
