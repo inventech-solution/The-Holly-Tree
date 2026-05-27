@@ -73,10 +73,16 @@
   #certifications-logo-slider-{{ section.id }} .certifications-logo-slider__list {
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     gap: clamp(18px, 3vw, 44px);
+    min-width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 0 clamp(12px, 2vw, 20px);
     list-style: none;
+  }
+
+  #certifications-logo-slider-{{ section.id }} .certifications-logo-slider__list + .certifications-logo-slider__list {
+    margin-inline-start: clamp(18px, 3vw, 44px);
   }
 
   #certifications-logo-slider-{{ section.id }} .certifications-logo-slider__item {
