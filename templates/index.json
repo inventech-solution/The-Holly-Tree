@@ -283,10 +283,22 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "collection_products_tabs_home": {
+      "type": "collection-products-tabs",
+      "settings": {
+        "collections": [
+          "spices",
+          "peanut-butter",
+          "tahini",
+          "herbs"
+        ]
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
+    "collection_products_tabs_home",
     "product_list_fa6P9H"
   ]
 }

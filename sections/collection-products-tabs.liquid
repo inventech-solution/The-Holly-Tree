@@ -1,0 +1,348 @@
+{% liquid
+  assign selected_collections = section.settings.collections
+  if selected_collections == blank
+    assign selected_collections = collections
+  endif
+%}
+
+<section class="cp-tabs" id="cp-tabs-{{ section.id }}" data-section-id="{{ section.id }}">
+  <div class="cp-tabs__header">
+    <div class="cp-tabs__tablist" role="tablist" aria-label="Collections">
+      {% for collection in selected_collections %}
+        {% if collection != blank %}
+          <h3 class="cp-tabs__tab-heading">
+            <button
+              type="button"
+              class="cp-tabs__tab{% if forloop.first %} is-active{% endif %}"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              data-collection-handle="{{ collection.handle }}"
+            >
+              {{ collection.title }}
+            </button>
+          </h3>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="cp-tabs__arrows">
+      <button class="cp-tabs__arrow" type="button" data-scroll-dir="-1" aria-label="Scroll products left">
+        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 14C8.5 14 2.50001 9.5811 2.5 8C2.49999 6.4188 8.5 2 8.5 2" stroke="#DBD9D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 14C15.5 14 9.5 9.5811 9.5 8C9.5 6.4188 15.5 2 15.5 2" stroke="#DBD9D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="cp-tabs__arrow" type="button" data-scroll-dir="1" aria-label="Scroll products right">
+        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 14C9.5 14 15.5 9.5811 15.5 8C15.5 6.4188 9.5 2 9.5 2" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 14C2.5 14 8.5 9.5811 8.5 8C8.5 6.4188 2.5 2 2.5 2" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  {% for collection in selected_collections %}
+    {% if collection != blank %}
+      <div class="cp-tabs__panel{% if forloop.first %} is-active{% endif %}" data-collection-panel="{{ collection.handle }}">
+        <div class="cp-tabs__products" data-products-row>
+          {% for product in collection.products %}
+            {% assign first_variant = product.selected_or_first_available_variant %}
+            <article class="cp-card" data-product-card>
+              <a href="{{ product.url }}" class="cp-card__image-wrap">
+                {% if product.featured_image %}
+                  {{ product.featured_image | image_url: width: 520 | image_tag: loading: 'lazy', class: 'cp-card__image', alt: product.title }}
+                {% endif %}
+              </a>
+              <p class="cp-card__title">{{ product.title }}</p>
+
+              <div class="cp-card__actions">
+                <div class="cp-card__variants" role="radiogroup" aria-label="{{ product.title }} variants">
+                  {% for variant in product.variants %}
+                    <button
+                      type="button"
+                      class="cp-card__variant{% if variant.id == first_variant.id %} is-selected{% endif %}"
+                      data-variant-id="{{ variant.id }}"
+                      data-variant-price="{{ variant.price | money }}"
+                      data-variant-available="{{ variant.available }}"
+                    >
+                      {{ variant.title }}
+                    </button>
+                  {% endfor %}
+                </div>
+                <button
+                  type="button"
+                  class="cp-card__add"
+                  data-add-to-cart
+                  data-current-variant-id="{{ first_variant.id }}"
+                  {% unless first_variant.available %}disabled{% endunless %}
+                >
+                  {% if first_variant.available %}
+                    Add To Bag | {{ first_variant.price | money }}
+                  {% else %}
+                    Sold out
+                  {% endif %}
+                </button>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</section>
+
+<style>
+  #cp-tabs-{{ section.id }} {
+    padding: 48px 0;
+    background: #efefef;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-tabs__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    max-width: 1280px;
+    margin: 0 auto 24px;
+    padding: 0 32px;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-tabs__tablist {
+    display: flex;
+    gap: 56px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-tabs__tablist::-webkit-scrollbar,
+  #cp-tabs-{{ section.id }} .cp-tabs__products::-webkit-scrollbar {
+    display: none;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-tabs__tab-heading {
+    margin: 0;
+    font-size: 0;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-tabs__tab {
+    border: 0;
+    background: transparent;
+    font-size: 30px;
+    font-weight: 600;
+    color: #141414;
+    cursor: pointer;
+    padding: 0 0 10px;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-tabs__tab.is-active {
+    border-bottom-color: #6b9931;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-tabs__arrows { display: flex; gap: 8px; }
+  #cp-tabs-{{ section.id }} .cp-tabs__arrow { border: 0; background: transparent; padding: 0; cursor: pointer; }
+  #cp-tabs-{{ section.id }} .cp-tabs__panel { display: none; }
+  #cp-tabs-{{ section.id }} .cp-tabs__panel.is-active { display: block; }
+
+  #cp-tabs-{{ section.id }} .cp-tabs__products {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px 20px;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card {
+    width: 300px;
+    flex: 0 0 300px;
+    position: relative;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card__image-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e7e7e7;
+    border-radius: 10px;
+    aspect-ratio: 1 / 1;
+    padding: 24px;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card__image { width: 100%; height: 100%; object-fit: contain; }
+
+  #cp-tabs-{{ section.id }} .cp-card__title {
+    margin: 14px 0 0;
+    text-align: center;
+    font-size: 40px;
+    line-height: 1.1;
+    font-weight: 600;
+    color: #383838;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card__actions {
+    margin-top: 16px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card:hover .cp-card__actions,
+  #cp-tabs-{{ section.id }} .cp-card:focus-within .cp-card__actions {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card__variants {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card__variant {
+    border: 0.94px solid #6b9931;
+    border-radius: 3.7px;
+    background: #fff;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card__variant.is-selected {
+    background: #f2f7ec;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card__add {
+    width: 100%;
+    border: 0.75px solid #6b9931;
+    border-radius: 3.7px;
+    background: #fff;
+    padding: 12px 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  #cp-tabs-{{ section.id }} .cp-card__add:disabled { opacity: .7; cursor: not-allowed; }
+
+  @media (hover: none) {
+    #cp-tabs-{{ section.id }} .cp-card__actions {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 767px) {
+    #cp-tabs-{{ section.id }} .cp-tabs__header { padding: 0 12px; }
+    #cp-tabs-{{ section.id }} .cp-tabs__tablist { gap: 24px; }
+    #cp-tabs-{{ section.id }} .cp-tabs__tab { font-size: 24px; }
+    #cp-tabs-{{ section.id }} .cp-tabs__products { padding: 0 12px 20px; }
+    #cp-tabs-{{ section.id }} .cp-card { width: 240px; flex-basis: 240px; }
+    #cp-tabs-{{ section.id }} .cp-card__title { font-size: 18px; }
+  }
+</style>
+
+<script>
+(() => {
+  const section = document.getElementById('cp-tabs-{{ section.id }}');
+  if (!section) return;
+
+  const tabs = Array.from(section.querySelectorAll('.cp-tabs__tab'));
+  const panels = Array.from(section.querySelectorAll('.cp-tabs__panel'));
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const handle = tab.dataset.collectionHandle;
+      tabs.forEach((item) => {
+        const active = item === tab;
+        item.classList.toggle('is-active', active);
+        item.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      panels.forEach((panel) => {
+        panel.classList.toggle('is-active', panel.dataset.collectionPanel === handle);
+      });
+    });
+  });
+
+  section.querySelectorAll('.cp-card').forEach((card) => {
+    const variantButtons = Array.from(card.querySelectorAll('.cp-card__variant'));
+    const addButton = card.querySelector('[data-add-to-cart]');
+    if (!addButton) return;
+
+    variantButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        variantButtons.forEach((item) => item.classList.remove('is-selected'));
+        button.classList.add('is-selected');
+        addButton.dataset.currentVariantId = button.dataset.variantId;
+        if (button.dataset.variantAvailable === 'true') {
+          addButton.disabled = false;
+          addButton.textContent = `Add To Bag | ${button.dataset.variantPrice}`;
+        } else {
+          addButton.disabled = true;
+          addButton.textContent = 'Sold out';
+        }
+      });
+    });
+
+    addButton.addEventListener('click', async () => {
+      const variantId = addButton.dataset.currentVariantId;
+      if (!variantId || addButton.disabled) return;
+      addButton.disabled = true;
+      const previousLabel = addButton.textContent;
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: Number(variantId), quantity: 1 }] }),
+        });
+
+        if (!response.ok) throw new Error('Failed to add');
+        const cartResponse = await fetch('/cart.js');
+        const cartData = await cartResponse.json();
+        document.dispatchEvent(new CustomEvent('cart:update', { bubbles: true, detail: { resource: cartData } }));
+      } catch (error) {
+        addButton.textContent = 'Error adding';
+      } finally {
+        if (!addButton.textContent.includes('Error')) {
+          addButton.disabled = false;
+          addButton.textContent = previousLabel;
+        }
+      }
+    });
+  });
+
+  section.querySelectorAll('.cp-tabs__arrow').forEach((arrow) => {
+    arrow.addEventListener('click', () => {
+      const panel = section.querySelector('.cp-tabs__panel.is-active');
+      const row = panel?.querySelector('[data-products-row]');
+      const card = row?.querySelector('[data-product-card]');
+      if (!row || !card) return;
+      const direction = Number(arrow.dataset.scrollDir || 1);
+      row.scrollBy({ left: card.getBoundingClientRect().width * direction, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Collection and Products",
+  "settings": [
+    {
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Collections",
+      "info": "Select collections in the desired tab order"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection and Products"
+    }
+  ]
+}
+{% endschema %}
