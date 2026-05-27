@@ -1,5 +1,5 @@
 {% liquid
-  assign has_logos = section.blocks.size > 0
+  assign logo_count = section.blocks.size
   assign marquee_duration = section.settings.speed | default: 25
 %}
 
@@ -10,7 +10,7 @@
         <h2 class="certifications-logo-slider__heading h2">{{ section.settings.heading }}</h2>
       {% endif %}
 
-      {% if has_logos %}
+      {% if logo_count > 0 %}
         <div class="certifications-logo-slider__viewport" aria-label="{{ section.settings.heading | default: 'Certifications' | escape }}">
           <div class="certifications-logo-slider__track" style="--marquee-duration: {{ marquee_duration }}s;">
             {% for duplicate in (1..2) %}
