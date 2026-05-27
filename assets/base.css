@@ -466,6 +466,7 @@ p:empty {
 
 .shopify-section:not(.header-section):has(.section) {
   position: relative;
+  margin-block: 30px;
 }
 
 .shopify-section:not(.header-section) .section-background {
