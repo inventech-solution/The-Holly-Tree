@@ -7,7 +7,7 @@
 <script src="{{ 'scrolltrigger.min.js' | asset_url }}" defer></script>
 <script src="{{ 'our-process.js' | asset_url }}" defer></script>
 
-<section class="our-process section-{{ section.id }}" data-section-id="{{ section.id }}" data-our-process-section>
+<section class="our-process section-{{ section.id }}" data-section-id="{{ section.id }}" data-our-process-section data-disable-scroll-reveal>
   <div class="our-process__container page-width">
     {% if section.settings.heading != blank or section.settings.subheading != blank %}
       <header class="our-process__header" data-scroll-reveal data-scroll-reveal-offset="20" data-scroll-reveal-duration="420">

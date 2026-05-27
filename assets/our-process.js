@@ -34,7 +34,7 @@
         ease: 'none',
         scrollTrigger: {
           trigger: section,
-          start: 'top center',
+          start: 'top bottom',
           end: () => `+=${Math.max(1, getTotalScroll(track, viewport))}`,
           pin: true,
           pinSpacing: false,
