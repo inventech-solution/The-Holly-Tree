@@ -3,13 +3,14 @@
 %}
 
 {{ 'our-process.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
 <script src="{{ 'scrolltrigger.min.js' | asset_url }}" defer></script>
 <script src="{{ 'our-process.js' | asset_url }}" defer></script>
 
 <section class="our-process section-{{ section.id }}" data-section-id="{{ section.id }}" data-our-process-section>
   <div class="our-process__container page-width">
     {% if section.settings.heading != blank or section.settings.subheading != blank %}
-      <header class="our-process__header">
+      <header class="our-process__header" data-scroll-reveal data-scroll-reveal-offset="20" data-scroll-reveal-duration="420">
         {% if section.settings.subheading != blank %}
           <p class="our-process__subheading">{{ section.settings.subheading }}</p>
         {% endif %}
@@ -22,7 +23,13 @@
     <div class="our-process__viewport" data-our-process-viewport>
       <div class="our-process__track" data-our-process-track>
         {% for block in section.blocks %}
-          <article class="our-process__card" {{ block.shopify_attributes }}>
+          <article
+            class="our-process__card"
+            data-scroll-reveal
+            data-scroll-reveal-offset="24"
+            data-scroll-reveal-duration="480"
+            {{ block.shopify_attributes }}
+          >
             {% if block.settings.image != blank %}
               <div class="our-process__image-wrapper">
                 {{
