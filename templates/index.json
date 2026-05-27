@@ -104,6 +104,30 @@
     "certifications_logo_slider_WMHMUW": {
       "type": "certifications-logo-slider",
       "blocks": {
+        "logo_eVNhgc": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/certificate_5.png",
+            "logo_shape": "rectangle",
+            "alt_text": "Certification logo"
+          }
+        },
+        "logo_n4B48g": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/certificate_6.png",
+            "logo_shape": "square",
+            "alt_text": "Certification logo"
+          }
+        },
+        "logo_Q9TEig": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/certificate_7.png",
+            "logo_shape": "square",
+            "alt_text": "Certification logo"
+          }
+        },
         "logo_x94PcP": {
           "type": "logo",
           "settings": {
@@ -138,6 +162,9 @@
         }
       },
       "block_order": [
+        "logo_eVNhgc",
+        "logo_n4B48g",
+        "logo_Q9TEig",
         "logo_x94PcP",
         "logo_c7mbK7",
         "logo_bJTgfb",
