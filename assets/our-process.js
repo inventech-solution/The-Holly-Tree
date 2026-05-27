@@ -6,6 +6,8 @@
     card: '.our-process__card'
   };
 
+  const state = new WeakMap();
+
   const getGsapRuntime = () => {
     const gsap = window.gsap;
     const ScrollTrigger = window.ScrollTrigger || window.gsap?.plugins?.ScrollTrigger;
@@ -16,7 +18,15 @@
 
   const getTotalScroll = (track, viewport) => Math.max(0, track.scrollWidth - viewport.clientWidth);
 
+  const destroyProcessSection = (section) => {
+    const teardown = state.get(section);
+    if (typeof teardown === 'function') teardown();
+    state.delete(section);
+  };
+
   const initProcessSection = (section, runtime) => {
+    destroyProcessSection(section);
+
     const { gsap } = runtime;
     const viewport = section.querySelector(selectors.viewport);
     const track = section.querySelector(selectors.track);
@@ -24,7 +34,7 @@
     if (!viewport || !track) return;
 
     const cards = track.querySelectorAll(selectors.card);
-    if (cards.length < 2) return;
+    if (cards.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const mm = gsap.matchMedia();
 
@@ -53,6 +63,11 @@
         gsap.set(track, { clearProps: 'transform' });
       };
     });
+
+    state.set(section, () => {
+      mm.revert();
+      gsap.set(track, { clearProps: 'transform' });
+    });
   };
 
   const onReady = () => {
@@ -63,6 +78,28 @@
     gsap.registerPlugin(ScrollTrigger);
 
     document.querySelectorAll(selectors.section).forEach((section) => initProcessSection(section, runtime));
+
+    document.addEventListener('shopify:section:load', (event) => {
+      const section = event.target?.matches?.(selectors.section)
+        ? event.target
+        : event.target?.querySelector?.(selectors.section);
+
+      if (section) {
+        initProcessSection(section, runtime);
+        ScrollTrigger.refresh();
+      }
+    });
+
+    document.addEventListener('shopify:section:unload', (event) => {
+      const section = event.target?.matches?.(selectors.section)
+        ? event.target
+        : event.target?.querySelector?.(selectors.section);
+
+      if (section) {
+        destroyProcessSection(section);
+        ScrollTrigger.refresh();
+      }
+    });
 
     window.addEventListener('load', () => {
       ScrollTrigger.refresh();
